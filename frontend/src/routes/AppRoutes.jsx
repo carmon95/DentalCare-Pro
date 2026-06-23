@@ -9,6 +9,10 @@ import Dashboard from '../pages/Dashboard';
 import Patients from '../pages/Patients';
 import Appointments from '../pages/Appointments';
 import Treatments from '../pages/Treatments';
+import Payments from '../pages/Payments';
+import ClinicalHistories from '../pages/ClinicalHistories';
+import PatientHistory from '../pages/PatientHistory';
+import Reports from '../pages/Reports';
 import Settings from '../pages/Settings';
 
 import PrivateRoute from './PrivateRoute';
@@ -60,6 +64,38 @@ export default function AppRoutes() {
             <Treatments />
         </PrivateRoute>
     }
+/>
+
+<Route
+    path="/payments"
+    element={
+        <PrivateRoute>
+            <Payments />
+        </PrivateRoute>
+    }
+/>
+
+<Route
+    path="/clinical-histories"
+    element={
+        <PrivateRoute>
+            <ClinicalHistories />
+        </PrivateRoute>
+    }
+/>
+
+<Route
+    path="/patient-history/:id"
+    element={
+        <PrivateRoute>
+            <PatientHistory />
+        </PrivateRoute>
+    }
+/>
+
+    <Route
+    path="/reports"
+    element={<Reports />}
 />
 
                 <Route

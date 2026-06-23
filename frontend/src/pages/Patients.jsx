@@ -12,12 +12,15 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
+import DescriptionIcon from '@mui/icons-material/Description';
+
 
 import { DataGrid } from '@mui/x-data-grid';
 
 import MainLayout from '../layouts/MainLayout';
 
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
     getPatients,
@@ -29,6 +32,8 @@ import {
 import PatientDialog from '../components/PatientDialog';
 
 export default function Patients() {
+
+    const navigate = useNavigate();
 
     const [patients, setPatients] = useState([]);
 
@@ -187,7 +192,7 @@ const handleEditPatient = (
 {
     field: 'actions',
     headerName: 'Acciones',
-    width: 150,
+    width: 220,
 
     sortable: false,
 
@@ -216,6 +221,17 @@ const handleEditPatient = (
             >
                 <DeleteIcon />
             </IconButton>
+
+            <IconButton
+    color="secondary"
+    onClick={() =>
+        navigate(
+            `/patient-history/${params.row.id}`
+        )
+    }
+>
+    <DescriptionIcon />
+</IconButton>
 
         </>
 

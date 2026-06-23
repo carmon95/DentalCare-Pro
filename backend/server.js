@@ -7,6 +7,8 @@ const patientRoutes = require('./src/routes/patientRoutes');
 const appointmentRoutes = require('./src/routes/appointmentRoutes');
 const settingsRoutes = require('./src/routes/settingsRoutes');
 const treatmentRoutes = require('./src/routes/treatmentRoutes');
+const paymentRoutes = require('./src/routes/paymentRoutes');
+const clinicalHistoryRoutes = require('./src/routes/clinicalHistoryRoutes');
 
 const app = express();
 
@@ -25,6 +27,16 @@ app.use(
 app.use(
     '/api/treatments',
     treatmentRoutes
+);
+
+app.use(
+    '/api/payments',
+    paymentRoutes
+);
+
+app.use(
+    '/api/clinical-histories',
+    clinicalHistoryRoutes
 );
 
 app.use(

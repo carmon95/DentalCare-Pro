@@ -72,7 +72,7 @@ const createTreatment = async (req, res) => {
                 treatment_type,
                 cost,
                 status,
-                observations
+                notes
             )
             VALUES
             (?, ?, ?, ?, ?, ?, ?)
@@ -116,15 +116,20 @@ const updateTreatment = async (req, res) => {
 
     try {
 
+        const { id } = req.params;
+
+        console.log('========== UPDATE TREATMENT ==========');
+        console.log(req.body);
+
         const {
-    patient_id,
-    start_date,
-    end_date,
-    treatment_type,
-    cost,
-    status,
-    notes
-} = req.body;
+            patient_id,
+            start_date,
+            end_date,
+            treatment_type,
+            cost,
+            status,
+            notes
+        } = req.body;
 
         await db.query(
             `
@@ -136,7 +141,7 @@ const updateTreatment = async (req, res) => {
                 treatment_type = ?,
                 cost = ?,
                 status = ?,
-                observations = ?
+                notes = ?
             WHERE id = ?
             `,
             [
@@ -161,7 +166,7 @@ const updateTreatment = async (req, res) => {
         console.error(error);
 
         res.status(500).json({
-            message: 'Error interno'
+            message: error.message
         });
 
     }
