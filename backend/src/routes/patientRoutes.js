@@ -6,17 +6,54 @@ const {
     getPatients,
     createPatient,
     deletePatient,
+    deactivatePatient,
+    reactivatePatient,
     updatePatient
 } = require('../controllers/patientController');
 
-router.get('/', getPatients);
+router.get(
+    '/',
+    getPatients
+);
 
 router.post(
     '/',
     createPatient
 );
 
-router.delete('/:id', deletePatient);
+/*
+|--------------------------------------------------------------------------
+| Desactivar paciente
+|--------------------------------------------------------------------------
+*/
+
+router.put(
+    '/deactivate/:id',
+    deactivatePatient
+);
+
+/*
+|--------------------------------------------------------------------------
+| Reactivar paciente
+|--------------------------------------------------------------------------
+*/
+
+router.put(
+    '/reactivate/:id',
+    reactivatePatient
+);
+
+/*
+|--------------------------------------------------------------------------
+| Eliminación individual
+|--------------------------------------------------------------------------
+*/
+
+router.delete(
+    '/:id',
+    deletePatient
+);
+
 router.put(
     '/:id',
     updatePatient

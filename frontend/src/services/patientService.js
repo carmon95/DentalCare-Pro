@@ -53,3 +53,29 @@ export const updatePatient = async (
     return response.data;
 
 };
+
+export const deactivatePatient = async (
+    id
+) => {
+
+    const response =
+        await axios.put(
+            `${API_URL}/deactivate/${id}`
+        );
+
+    return response.data;
+
+};
+
+export const reactivatePatient = async (
+    id
+) => {
+
+    const response =
+        await axios.put(
+            `${API_URL}/reactivate/${id}`
+        );
+
+    return response.data;
+
+};

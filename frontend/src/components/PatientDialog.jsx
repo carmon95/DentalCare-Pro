@@ -123,6 +123,7 @@ export default function PatientDialog({
                             name="birth_date"
                             value={formData.birth_date}
                             onChange={handleChange}
+                            helperText="Fecha de nacimiento"
                         />
                     </Grid>
 

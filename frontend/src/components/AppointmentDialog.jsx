@@ -86,11 +86,21 @@ useEffect(() => {
     const loadPatients = async () => {
 
         try {
+const data =
+    await getPatients();
 
-            const data =
-                await getPatients();
+setPatients(
 
-            setPatients(data);
+    data.filter(
+
+        patient =>
+
+            patient.status ===
+            'ACTIVO'
+
+    )
+
+);
 
         } catch (error) {
 

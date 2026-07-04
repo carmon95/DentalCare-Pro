@@ -9,6 +9,8 @@ const settingsRoutes = require('./src/routes/settingsRoutes');
 const treatmentRoutes = require('./src/routes/treatmentRoutes');
 const paymentRoutes = require('./src/routes/paymentRoutes');
 const clinicalHistoryRoutes = require('./src/routes/clinicalHistoryRoutes');
+const dashboardRoutes = require('./src/routes/dashboardRoutes');
+const patientSummaryRoutes = require('./src/routes/patientSummaryRoutes');
 
 const app = express();
 
@@ -40,8 +42,18 @@ app.use(
 );
 
 app.use(
+    '/api/dashboard',
+    dashboardRoutes
+);
+
+app.use(
     '/api/settings',
     settingsRoutes
+);
+
+app.use(
+    '/api/patient-summary',
+    patientSummaryRoutes
 );
 
 app.get('/', (req, res) => {

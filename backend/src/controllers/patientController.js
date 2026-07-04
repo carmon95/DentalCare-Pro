@@ -11,19 +11,20 @@ const getPatients = async (req, res) => {
     try {
 
         const [patients] = await db.query(`
-            SELECT
-                id,
-                full_name,
-                birth_date,
-                phone,
-                address,
-                email,
-                allergies,
-                medical_conditions,
-                notes,
-                created_at
-            FROM patients
-            ORDER BY id DESC
+           SELECT
+            id,
+            full_name,
+            birth_date,
+            phone,
+            address,
+            email,
+            allergies,
+            medical_conditions,
+            notes,
+            status,
+            created_at
+        FROM patients
+        ORDER BY id DESC
         `);
 
         res.json(patients);
@@ -142,6 +143,99 @@ const deletePatient = async (req, res) => {
 
 /*
 |--------------------------------------------------------------------------
+| Desactivar paciente
+|--------------------------------------------------------------------------
+*/
+
+const deactivatePatient = async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+
+        await db.query(
+
+            `
+            UPDATE patients
+            SET status='INACTIVO'
+            WHERE id=?
+            `,
+
+            [id]
+
+        );
+
+        res.json({
+
+            message:
+                'Paciente desactivado correctamente.'
+
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+
+            message:
+                'Error interno'
+
+        });
+
+    }
+
+};
+
+/*
+|--------------------------------------------------------------------------
+| Reactivar paciente
+|--------------------------------------------------------------------------
+*/
+
+const reactivatePatient = async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+
+        await db.query(
+
+            `
+            UPDATE patients
+            SET status='ACTIVO'
+            WHERE id=?
+            `,
+
+            [id]
+
+        );
+
+        res.json({
+
+            message:
+                'Paciente reactivado correctamente.'
+
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+
+            message:
+                'Error interno'
+
+        });
+
+    }
+
+};
+
+
+/*
+|--------------------------------------------------------------------------
 | Editar paciente
 |--------------------------------------------------------------------------
 */
@@ -211,5 +305,7 @@ module.exports = {
     getPatients,
     createPatient,
     deletePatient,
+    deactivatePatient,
+    reactivatePatient,
     updatePatient
 };

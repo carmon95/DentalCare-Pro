@@ -64,6 +64,41 @@ const createAppointment = async (
             notes
         } = req.body;
 
+        /*
+|--------------------------------------------------------------------------
+| Verificar que el paciente esté activo
+|--------------------------------------------------------------------------
+*/
+
+const [patient] = await db.query(
+
+    `
+    SELECT status
+    FROM patients
+    WHERE id=?
+    `,
+
+    [patient_id]
+
+);
+
+if (
+
+    patient.length === 0 ||
+
+    patient[0].status === 'INACTIVO'
+
+) {
+
+    return res.status(400).json({
+
+        message:
+            'No se puede crear una cita para un paciente inactivo.'
+
+    });
+
+}
+
         const [result] = await db.query(
             `
             INSERT INTO appointments

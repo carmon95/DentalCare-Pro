@@ -5,7 +5,11 @@ import {
     Button,
     TextField,
     Snackbar,
-    Alert
+    Alert,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem
 } from '@mui/material';
 
 import AddIcon from '@mui/icons-material/Add';
@@ -13,6 +17,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import DescriptionIcon from '@mui/icons-material/Description';
+import RestoreIcon from '@mui/icons-material/Restore';
 
 
 import { DataGrid } from '@mui/x-data-grid';
@@ -25,7 +30,8 @@ import { useNavigate } from 'react-router-dom';
 import {
     getPatients,
     createPatient,
-    deletePatient,
+    deactivatePatient,
+    reactivatePatient,
     updatePatient
 } from '../services/patientService';
 
@@ -38,6 +44,9 @@ export default function Patients() {
     const [patients, setPatients] = useState([]);
 
     const [search, setSearch] = useState('');
+
+    const [statusFilter, setStatusFilter] =
+useState('ACTIVO');
 
     const [loading, setLoading] = useState(true);
 
@@ -55,6 +64,8 @@ export default function Patients() {
 
     const [errorMessage, setErrorMessage] =
     useState(false);
+
+
 
     useEffect(() => {
 
@@ -124,27 +135,69 @@ export default function Patients() {
 
 };
 
-    const handleDeletePatient = async (id) => {
+    const handleDeletePatient = async (
+    id
+) => {
 
-    const confirmDelete = window.confirm(
-        '¿Desea eliminar este paciente?'
-    );
+    const confirmDeactivate =
+        window.confirm(
 
-    if (!confirmDelete) return;
+`¿Desea desactivar este paciente?
+
+Su historial clínico, citas, tratamientos y pagos permanecerán almacenados.
+
+Podrá reactivarlo en cualquier momento.`
+
+        );
+
+    if (!confirmDeactivate)
+        return;
 
     try {
 
-        await deletePatient(id);
+        await deactivatePatient(id);
 
         await loadPatients();
+
+        setSuccessMessage(true);
 
     } catch (error) {
 
         console.error(error);
 
-        alert(
-            'Error al eliminar paciente'
+        setErrorMessage(true);
+
+    }
+
+};
+
+const handleReactivatePatient = async (
+    id
+) => {
+
+    const confirmReactivate =
+        window.confirm(
+
+            '¿Desea reactivar este paciente?'
+
         );
+
+    if (!confirmReactivate)
+        return;
+
+    try {
+
+        await reactivatePatient(id);
+
+        await loadPatients();
+
+        setSuccessMessage(true);
+
+    } catch (error) {
+
+        console.error(error);
+
+        setErrorMessage(true);
 
     }
 
@@ -211,16 +264,37 @@ const handleEditPatient = (
                 <EditIcon />
             </IconButton>
 
-            <IconButton
-                color="error"
-                onClick={() =>
-                    handleDeletePatient(
-                        params.row.id
-                    )
-                }
-            >
-                <DeleteIcon />
-            </IconButton>
+            {
+    params.row.status === 'ACTIVO' ? (
+
+        <IconButton
+            color="error"
+            title="Desactivar paciente"
+            onClick={() =>
+                handleDeletePatient(
+                    params.row.id
+                )
+            }
+        >
+            <DeleteIcon />
+        </IconButton>
+
+    ) : (
+
+        <IconButton
+            color="success"
+            title="Reactivar paciente"
+            onClick={() =>
+                handleReactivatePatient(
+                    params.row.id
+                )
+            }
+        >
+            <RestoreIcon />
+        </IconButton>
+
+    )
+}
 
             <IconButton
     color="secondary"
@@ -239,14 +313,37 @@ const handleEditPatient = (
 }
     ];
 
-    const filteredPatients =
-    patients.filter(patient =>
+   const filteredPatients =
+patients.filter(patient => {
+
+    const matchesSearch =
         patient.full_name
             ?.toLowerCase()
             .includes(
                 search.toLowerCase()
-            )
+            );
+
+    const matchesStatus =
+
+        statusFilter ===
+        'TODOS'
+
+        ||
+
+        patient.status ===
+        statusFilter;
+
+    return (
+
+        matchesSearch
+
+        &&
+
+        matchesStatus
+
     );
+
+});
 
     return (
 
@@ -304,16 +401,54 @@ const handleEditPatient = (
                     }}
                 >
 
-                    <DataGrid
-                        rows={filteredPatients}
-                        columns={columns}
-                        loading={loading}
-                        pageSizeOptions={[
-                            5,
-                            10,
-                            20
-                        ]}
-                    />
+            <FormControl
+    sx={{
+        mt: 2,
+        mb: 3,
+        width: 250
+    }}
+>
+
+    <InputLabel>
+        Estado
+    </InputLabel>
+
+    <Select
+        value={statusFilter}
+        label="Estado"
+        onChange={(e) =>
+            setStatusFilter(
+                e.target.value
+            )
+        }
+    >
+
+        <MenuItem value="ACTIVO">
+            Activos
+        </MenuItem>
+
+        <MenuItem value="INACTIVO">
+            Inactivos
+        </MenuItem>
+
+        <MenuItem value="TODOS">
+            Todos
+        </MenuItem>
+
+    </Select>
+
+</FormControl>
+<DataGrid
+    rows={filteredPatients}
+    columns={columns}
+    loading={loading}
+
+    pageSizeOptions={[
+        5,
+        10,
+        20
+    ]}
+/>
 
                 </Box>
 
@@ -342,7 +477,7 @@ const handleEditPatient = (
         severity="success"
         variant="filled"
     >
-        Paciente creado correctamente
+        Operación realizada correctamente.
     </Alert>
 
 </Snackbar>
