@@ -50,25 +50,25 @@ if (isDev) {
 
 }
 
-        else {
+else {
 
-           this.mainWindow.loadURL(
+    this.mainWindow.loadFile(
 
-    "file://" +
+        path.join(
 
-    path.join(
+            __dirname,
 
-        __dirname,
+            "../../../frontend/dist/index.html"
 
-        "../../../frontend/dist/index.html"
+        ),
 
-    ) +
+        {
 
-    "#" +
+            hash: route.replace("/", "")
 
-    route
+        }
 
-);
+    );
         }
 
         this.mainWindow.once(

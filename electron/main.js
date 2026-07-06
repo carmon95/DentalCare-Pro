@@ -15,7 +15,7 @@ const MachineService = require("./src/services/MachineService");
 const LicenseService = require("./src/services/LicenseService");
 const ActivationService = require("./src/services/ActivationService");
 
-const isDev = !app.isPackaged;
+const isDev = false;
 
 ipcMain.handle(
 

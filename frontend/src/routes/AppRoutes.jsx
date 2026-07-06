@@ -1,5 +1,5 @@
 import {
-    BrowserRouter,
+    HashRouter,
     Routes,
     Route
 } from 'react-router-dom';
@@ -22,7 +22,7 @@ export default function AppRoutes() {
 
     return (
 
-        <BrowserRouter>
+        <HashRouter>
 
             <Routes>
 
@@ -115,7 +115,7 @@ export default function AppRoutes() {
 
             </Routes>
 
-        </BrowserRouter>
+        </HashRouter>
 
     );
 
