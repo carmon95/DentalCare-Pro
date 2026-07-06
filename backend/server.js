@@ -64,6 +64,23 @@ app.get('/', (req, res) => {
 
 const PORT = 3001;
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Servidor iniciado en puerto ${PORT}`);
 });
+
+function shutdown(signal) {
+
+    console.log(`Recibida señal ${signal}. Cerrando servidor...`);
+
+    server.close(() => {
+
+        console.log("Servidor detenido.");
+
+        process.exit(0);
+
+    });
+
+}
+
+process.on("SIGTERM", () => shutdown("SIGTERM"));
+process.on("SIGINT", () => shutdown("SIGINT"));

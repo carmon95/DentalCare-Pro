@@ -14,6 +14,7 @@ import ClinicalHistories from '../pages/ClinicalHistories';
 import PatientHistory from '../pages/PatientHistory';
 import Reports from '../pages/Reports';
 import Settings from '../pages/Settings';
+import Activation from '../pages/license/Activation';
 
 import PrivateRoute from './PrivateRoute';
 
@@ -24,6 +25,11 @@ export default function AppRoutes() {
         <BrowserRouter>
 
             <Routes>
+
+                <Route
+    path="/activation"
+    element={<Activation />}
+                />
 
                 <Route
                     path="/"
