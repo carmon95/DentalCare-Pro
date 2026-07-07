@@ -52,19 +52,39 @@ class CryptoService {
 
     ) {
 
-        const publicKey = fs.readFileSync(
+     const { app } = require("electron");
 
-            path.join(
+const publicKeyPath = app.isPackaged
 
-                __dirname,
+    ? path.join(
 
-                "../../../license/public/public.pem"
+        process.resourcesPath,
 
-            ),
+        "publish",
 
-            "utf8"
+        "license",
 
-        );
+        "public",
+
+        "public.pem"
+
+    )
+
+    : path.join(
+
+        __dirname,
+
+        "../../../license/public/public.pem"
+
+    );
+
+const publicKey = fs.readFileSync(
+
+    publicKeyPath,
+
+    "utf8"
+
+);
 
         const verifier = crypto.createVerify(
 

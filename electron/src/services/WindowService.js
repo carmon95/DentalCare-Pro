@@ -1,4 +1,4 @@
-const { BrowserWindow } = require("electron");
+const { BrowserWindow, app } = require("electron");
 const path = require("path");
 const AppConfig = require("../config/AppConfig");
 
@@ -56,9 +56,13 @@ else {
 
         path.join(
 
-            __dirname,
+            process.resourcesPath,
 
-            "../../../frontend/dist/index.html"
+            "publish",
+
+            "frontend",
+
+            "index.html"
 
         ),
 
@@ -69,7 +73,8 @@ else {
         }
 
     );
-        }
+
+}
 
         this.mainWindow.once(
 
@@ -108,23 +113,27 @@ else {
 
     else {
 
-        this.mainWindow.loadURL(
+ this.mainWindow.loadFile(
 
-            "file://" +
+    path.join(
 
-            path.join(
+        process.resourcesPath,
 
-                __dirname,
+        "publish",
 
-                "../../../frontend/dist/index.html"
+        "frontend",
 
-            ) +
+        "index.html"
 
-            "#" +
+    ),
 
-            route
+    {
 
-        );
+        hash: route.replace("/", "")
+
+    }
+
+);
 
     }
 

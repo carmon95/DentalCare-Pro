@@ -8,7 +8,23 @@ class LicenseService {
 
     constructor() {
 
-        this.licensePath = path.join(
+    const { app } = require("electron");
+
+    this.licensePath = app.isPackaged
+
+        ? path.join(
+
+            process.resourcesPath,
+
+            "publish",
+
+            "license",
+
+            "license.dat"
+
+        )
+
+        : path.join(
 
             __dirname,
 
@@ -16,7 +32,7 @@ class LicenseService {
 
         );
 
-    }
+}
 async validate() {
 
     try {

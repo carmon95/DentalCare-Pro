@@ -1,3 +1,5 @@
+const { app } = require("electron");
+
 const { spawn } = require("child_process");
 const kill = require("tree-kill");
 const path = require("path");
@@ -24,10 +26,34 @@ class BackendService {
 
        const path = require("path");
 
-const backendPath = path.join(
-    __dirname,
-    "../../../backend/server.js"
+let backendPath;
+
+if (app.isPackaged) {
+
+  backendPath = path.join(
+
+    process.resourcesPath,
+
+    "publish",
+
+    "backend",
+
+    "server.js"
+
 );
+
+}
+else {
+
+    backendPath = path.join(
+
+        __dirname,
+
+        "../../../backend/server.js"
+
+    );
+
+}
 
 this.process = spawn(
 

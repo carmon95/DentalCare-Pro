@@ -1,22 +1,60 @@
 {
   "name": "electron",
   "version": "1.0.0",
-  "description": "",
+ "description": "Sistema profesional de gestión para clínicas odontológicas",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "dist": "electron-builder --win portable",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Carlos Montalván",
   "license": "ISC",
   "dependencies": {
-    "electron": "^43.0.0",
     "systeminformation": "^5.31.12",
     "tree-kill": "^1.2.2",
     "winreg": "^1.2.5"
   },
   "devDependencies": {
+     "electron": "^43.0.0",
     "electron-builder": "^26.15.3"
   }
+
+  ,
+"build": {
+
+    "appId": "com.dentalcare.pro",
+
+    "productName": "DentalCare Pro",
+
+    "directories": {
+
+        "output": "dist"
+
+    },
+
+    "asar": true,
+
+    "files": [
+    "main.js",
+    "preload.js",
+     "bootManager.js",
+    "src/**/*",
+    "assets/**/*",
+    "package.json"
+],
+
+"extraResources": [
+  {
+    "from": "../publish",
+    "to": "publish"
+  }
+],
+"win": {
+  "target": [
+    "portable"
+  ]
+}
+}
 }

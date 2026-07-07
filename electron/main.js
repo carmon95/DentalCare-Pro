@@ -15,7 +15,7 @@ const MachineService = require("./src/services/MachineService");
 const LicenseService = require("./src/services/LicenseService");
 const ActivationService = require("./src/services/ActivationService");
 
-const isDev = false;
+const isDev = !app.isPackaged
 
 ipcMain.handle(
 
@@ -79,13 +79,27 @@ ipcMain.handle(
 
             const sourceFile = result.filePaths[0];
 
-            const destinationFile = path.join(
+           const destinationFile = app.isPackaged
 
-                __dirname,
+    ? path.join(
 
-                "../license/license.dat"
+        process.resourcesPath,
 
-            );
+        "publish",
+
+        "license",
+
+        "license.dat"
+
+      )
+
+    : path.join(
+
+        __dirname,
+
+        "../license/license.dat"
+
+      );
 
             fs.copyFileSync(
 
