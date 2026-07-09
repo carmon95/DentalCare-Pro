@@ -15,6 +15,8 @@ import PatientHistory from '../pages/PatientHistory';
 import Reports from '../pages/Reports';
 import Settings from '../pages/Settings';
 import Activation from '../pages/license/Activation';
+import Setup from "../pages/setup/Setup";
+import Boot from "../pages/Boot";
 
 import PrivateRoute from './PrivateRoute';
 
@@ -25,17 +27,25 @@ export default function AppRoutes() {
         <HashRouter>
 
             <Routes>
+                <Route
+    path="/setup"
+    element={<Setup />}
+/>
 
                 <Route
     path="/activation"
     element={<Activation />}
                 />
 
-                <Route
-                    path="/"
-                    element={<Login />}
-                />
+             <Route
+    path="/"
+    element={<Boot />}
+/>
 
+<Route
+    path="/login"
+    element={<Login />}
+/>
                 <Route
                     path="/dashboard"
                     element={

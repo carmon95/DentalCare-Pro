@@ -40,12 +40,12 @@ class WindowService {
             }
 
         });
+console.log("Ruta inicial:", route);
+
 if (isDev) {
 
-    this.mainWindow.loadURL(
-
-    `http://localhost:5173${route}`
-
+this.mainWindow.loadURL(
+    `http://localhost:5173/#${route}`
 );
 
 }
@@ -103,11 +103,9 @@ else {
 
     if (isDev) {
 
-        this.mainWindow.loadURL(
-
-            `http://localhost:5173${route}`
-
-        );
+      this.mainWindow.loadURL(
+    `http://localhost:5173/#${route}`
+);
 
     }
 

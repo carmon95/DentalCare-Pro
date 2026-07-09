@@ -118,6 +118,16 @@ async validate() {
 
 }
 
+
+    // 👇 NUEVO MÉTODO
+    async isActivated() {
+
+        const result = await this.validate();
+
+        return result.valid;
+
+    }
+
 }
 
 module.exports = new LicenseService();

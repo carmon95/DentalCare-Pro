@@ -23,6 +23,16 @@ async function prepare() {
         path.join(publishPath, "frontend")
     );
 
+    // Database
+
+await fs.copy(
+
+    path.join(ROOT, "database"),
+
+    path.join(publishPath, "database")
+
+);
+
     // Licencia
     await fs.ensureDir(
         path.join(publishPath, "license")

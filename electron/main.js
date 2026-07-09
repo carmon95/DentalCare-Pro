@@ -14,8 +14,15 @@ const SplashScreenService = require("./src/services/SplashScreenService");
 const MachineService = require("./src/services/MachineService");
 const LicenseService = require("./src/services/LicenseService");
 const ActivationService = require("./src/services/ActivationService");
+const BootManager = require("./src/services/BootManager");
+const MySQLDetectionService = require("./src/services/MySQLDetectionService");
+const ConfigService = require("./src/services/ConfigService");
+
 
 const isDev = !app.isPackaged
+
+app.setName("DentalCare Pro");
+app.setAppUserModelId("com.dentalcare.pro");
 
 ipcMain.handle(
 
@@ -165,6 +172,93 @@ ipcMain.handle(
 
 );
 
+
+ipcMain.handle(
+
+    "test-db-connection",
+
+    async (event, config) => {
+
+        const DatabaseInstallerService = require(
+
+            "./src/services/DatabaseInstallerService"
+
+        );
+
+        return await DatabaseInstallerService.testConnection(
+
+            config
+
+        );
+
+    }
+
+);
+
+ipcMain.handle(
+
+    "initialize-database",
+
+    async (event, config) => {
+
+        const DatabaseInstallerService = require(
+
+            "./src/services/DatabaseInstallerService"
+
+        );
+
+        return await DatabaseInstallerService.initialize(
+
+            config
+
+        );
+
+    }
+
+);
+
+ipcMain.handle(
+
+    "mysql-installed",
+
+    async () => {
+
+        return await MySQLDetectionService.isInstalled();
+
+    }
+
+);
+
+ipcMain.handle(
+
+    "save-config",
+
+    async (event, config) => {
+
+        ConfigService.save(config);
+
+        return {
+
+            success: true
+
+        };
+
+    }
+
+);
+
+ipcMain.handle(
+
+    "get-initial-route",
+
+    async () => {
+
+        return await BootManager.getInitialRoute();
+
+    }
+
+);
+
 app.whenReady().then(async () => {
 
     SplashScreenService.create();
@@ -180,23 +274,19 @@ app.whenReady().then(async () => {
             setTimeout(resolve, 2000)
         );
 
-        const validation = await LicenseService.validate();
+       const initialRoute =
 
-        if (validation.valid) {
+    await BootManager.getInitialRoute();
 
-            WindowService.createMainWindow(
-                isDev,
-                "/"
-            );
+WindowService.createMainWindow(
 
-        } else {
+    isDev,
 
-            WindowService.createMainWindow(
-                isDev,
-                "/activation"
-            );
+    initialRoute
 
-        }
+);
+
+WindowService.getMainWindow().webContents.openDevTools();
 
         SplashScreenService.close();
 
