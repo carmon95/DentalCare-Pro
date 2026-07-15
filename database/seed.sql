@@ -13,7 +13,7 @@ VALUES
 1,
 'Administrador',
 'admin@dental.com',
-'$2b$10$bU29pvvjiTx7qWG1AirPCOAmFIowiEe0khVgNXc6ycgRIy/S4pxUC',
+'$2b$10$yL5J1h/4jKI.ZSSG78hrGexXl8Y5wzRu169gvzzLpfDyP7rd8B0O2',
 'ADMIN',
 '2026-06-08 05:18:48',
 'admin'

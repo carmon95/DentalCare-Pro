@@ -19,8 +19,8 @@ import {
     CheckCircle
 } from "@mui/icons-material";
 
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 export default function Setup() {
 
@@ -31,7 +31,7 @@ export default function Setup() {
         host: "localhost",
         port: "3306",
         user: "root",
-        password: "admin",
+        password: "DentalCare2026!",
         database: "dental_system_test"
 
     };
@@ -40,67 +40,81 @@ export default function Setup() {
     const [status, setStatus] = useState("Listo para comenzar.");
     const [progress, setProgress] = useState(0);
 
+    useEffect(() => {
+
+    window.electronAPI.onSetupProgress(
+
+        ({ progress, message }) => {
+
+            setProgress(progress);
+
+            setStatus(message);
+
+        }
+
+    );
+
+}, []);
+
     const prepareSystem = async () => {
 
-        setLoading(true);
+    setLoading(true);
 
-        try {
+    try {
 
-            setProgress(10);
-            setStatus("Verificando instalación de MySQL...");
+        setProgress(10);
+        setStatus("Verificando instalación...");
 
-            const installed =
-                await window.electronAPI.mysqlInstalled();
+        const result =
+            await window.electronAPI.prepareSystem(config);
 
-            if (!installed) {
+        if (!result.success) {
 
-                alert("MySQL no está instalado.");
+            alert(result.message);
 
-                setLoading(false);
+            setLoading(false);
 
-                return;
+            setProgress(0);
 
-            }
-
-            setProgress(40);
-            setStatus("Creando base de datos...");
-
-            const result =
-                await window.electronAPI.initializeDatabase(config);
-
-            if (!result.success) {
-
-                alert(result.message);
-
-                setLoading(false);
-
-                return;
-
-            }
-
-            setProgress(70);
-            setStatus("Guardando configuración...");
-
-            await window.electronAPI.saveConfig(config);
-
-            setProgress(100);
-            setStatus("Sistema preparado correctamente.");
-
-            navigate("/activation", { replace: true });
+            setStatus("Error durante la preparación.");
 
             return;
 
         }
 
-        catch (e) {
+        setProgress(100);
 
-            alert(e.message);
+        setStatus("Sistema preparado correctamente.");
 
-            setLoading(false);
+        navigate(
 
-        }
+            "/activation",
 
-    };
+            {
+
+                replace: true
+
+            }
+
+        );
+
+    }
+
+    catch (e) {
+
+        console.error(e);
+
+        alert(e.message);
+
+        setLoading(false);
+
+        setProgress(0);
+
+        setStatus("Error durante la preparación.");
+
+    }
+
+};
 
     const StepCard = ({ icon, title, description }) => (
 

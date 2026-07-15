@@ -27,6 +27,54 @@ SET time_zone = "+00:00";
 -- Table structure for table `appointments`
 --
 
+CREATE TABLE `users` (
+  `id` int NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `role` enum('ADMIN','DOCTOR','ASSISTANT') DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `username` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `patients` (
+  `id` int NOT NULL,
+  `full_name` varchar(200) DEFAULT NULL,
+  `birth_date` date DEFAULT NULL,
+  `phone` varchar(50) DEFAULT NULL,
+  `address` text,
+  `email` varchar(100) DEFAULT NULL,
+  `allergies` text,
+  `medical_conditions` text,
+  `notes` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` enum('ACTIVO','INACTIVO') DEFAULT 'ACTIVO'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `settings` (
+  `id` int NOT NULL,
+  `clinic_name` varchar(255) DEFAULT NULL,
+  `doctor_name` varchar(255) DEFAULT NULL,
+  `phone` varchar(50) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `address` text,
+  `opening_time` time DEFAULT NULL,
+  `closing_time` time DEFAULT NULL,
+  `appointment_duration` int DEFAULT '30'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `treatments` (
+  `id` int NOT NULL,
+  `patient_id` int NOT NULL,
+  `start_date` date DEFAULT NULL,
+  `treatment_type` varchar(255) NOT NULL,
+  `cost` decimal(10,2) DEFAULT '0.00',
+  `status` varchar(50) DEFAULT 'PENDIENTE',
+  `notes` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `end_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 CREATE TABLE `appointments` (
   `id` int NOT NULL,
   `patient_id` int NOT NULL,
@@ -37,12 +85,6 @@ CREATE TABLE `appointments` (
   `notes` text,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `clinical_histories`
---
 
 CREATE TABLE `clinical_histories` (
   `id` int NOT NULL,
@@ -59,32 +101,6 @@ CREATE TABLE `clinical_histories` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `patients`
---
-
-CREATE TABLE `patients` (
-  `id` int NOT NULL,
-  `full_name` varchar(200) DEFAULT NULL,
-  `birth_date` date DEFAULT NULL,
-  `phone` varchar(50) DEFAULT NULL,
-  `address` text,
-  `email` varchar(100) DEFAULT NULL,
-  `allergies` text,
-  `medical_conditions` text,
-  `notes` text,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `status` enum('ACTIVO','INACTIVO') DEFAULT 'ACTIVO'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `payments`
---
-
 CREATE TABLE `payments` (
   `id` int NOT NULL,
   `treatment_id` int NOT NULL,
@@ -95,185 +111,45 @@ CREATE TABLE `payments` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `settings`
---
-
-CREATE TABLE `settings` (
-  `id` int NOT NULL,
-  `clinic_name` varchar(255) DEFAULT NULL,
-  `doctor_name` varchar(255) DEFAULT NULL,
-  `phone` varchar(50) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `address` text,
-  `opening_time` time DEFAULT NULL,
-  `closing_time` time DEFAULT NULL,
-  `appointment_duration` int DEFAULT '30'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `treatments`
---
-
-CREATE TABLE `treatments` (
-  `id` int NOT NULL,
-  `patient_id` int NOT NULL,
-  `start_date` date DEFAULT NULL,
-  `treatment_type` varchar(255) NOT NULL,
-  `cost` decimal(10,2) DEFAULT '0.00',
-  `status` varchar(50) DEFAULT 'PENDIENTE',
-  `notes` text,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `end_date` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `users`
---
-
-CREATE TABLE `users` (
-  `id` int NOT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `role` enum('ADMIN','DOCTOR','ASSISTANT') DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `username` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `appointments`
---
 ALTER TABLE `appointments`
   ADD PRIMARY KEY (`id`),
   ADD KEY `patient_id` (`patient_id`);
-
---
--- Indexes for table `clinical_histories`
---
 ALTER TABLE `clinical_histories`
   ADD PRIMARY KEY (`id`),
   ADD KEY `patient_id` (`patient_id`);
-
---
--- Indexes for table `patients`
---
 ALTER TABLE `patients`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `payments`
---
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`id`),
   ADD KEY `treatment_id` (`treatment_id`);
-
---
--- Indexes for table `settings`
---
 ALTER TABLE `settings`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `treatments`
---
 ALTER TABLE `treatments`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_treatment_patient` (`patient_id`);
-
---
--- Indexes for table `users`
---
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`),
   ADD UNIQUE KEY `username` (`username`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `appointments`
---
 ALTER TABLE `appointments`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `clinical_histories`
---
 ALTER TABLE `clinical_histories`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `patients`
---
 ALTER TABLE `patients`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `payments`
---
 ALTER TABLE `payments`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `settings`
---
 ALTER TABLE `settings`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `treatments`
---
 ALTER TABLE `treatments`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `users`
---
 ALTER TABLE `users`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `appointments`
---
 ALTER TABLE `appointments`
   ADD CONSTRAINT `appointments_ibfk_1` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`id`);
-
---
--- Constraints for table `clinical_histories`
---
 ALTER TABLE `clinical_histories`
   ADD CONSTRAINT `clinical_histories_ibfk_1` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `payments`
---
 ALTER TABLE `payments`
   ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`treatment_id`) REFERENCES `treatments` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `treatments`
---
 ALTER TABLE `treatments`
   ADD CONSTRAINT `fk_treatment_patient` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`id`) ON DELETE CASCADE;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

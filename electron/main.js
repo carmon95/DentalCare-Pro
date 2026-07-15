@@ -17,6 +17,7 @@ const ActivationService = require("./src/services/ActivationService");
 const BootManager = require("./src/services/BootManager");
 const MySQLDetectionService = require("./src/services/MySQLDetectionService");
 const ConfigService = require("./src/services/ConfigService");
+const DatabaseSetupService = require("./src/services/DatabaseSetupService");
 
 
 const isDev = !app.isPackaged
@@ -86,27 +87,13 @@ ipcMain.handle(
 
             const sourceFile = result.filePaths[0];
 
-           const destinationFile = app.isPackaged
+       const destinationFile = path.join(
 
-    ? path.join(
+    app.getPath("userData"),
 
-        process.resourcesPath,
+    "license.dat"
 
-        "publish",
-
-        "license",
-
-        "license.dat"
-
-      )
-
-    : path.join(
-
-        __dirname,
-
-        "../license/license.dat"
-
-      );
+);
 
             fs.copyFileSync(
 
@@ -115,6 +102,9 @@ ipcMain.handle(
                 destinationFile
 
             );
+            console.log("Licencia copiada en:");
+
+console.log(destinationFile);
 
             const validation =
 
@@ -175,73 +165,11 @@ ipcMain.handle(
 
 ipcMain.handle(
 
-    "test-db-connection",
-
-    async (event, config) => {
-
-        const DatabaseInstallerService = require(
-
-            "./src/services/DatabaseInstallerService"
-
-        );
-
-        return await DatabaseInstallerService.testConnection(
-
-            config
-
-        );
-
-    }
-
-);
-
-ipcMain.handle(
-
-    "initialize-database",
-
-    async (event, config) => {
-
-        const DatabaseInstallerService = require(
-
-            "./src/services/DatabaseInstallerService"
-
-        );
-
-        return await DatabaseInstallerService.initialize(
-
-            config
-
-        );
-
-    }
-
-);
-
-ipcMain.handle(
-
     "mysql-installed",
 
     async () => {
 
         return await MySQLDetectionService.isInstalled();
-
-    }
-
-);
-
-ipcMain.handle(
-
-    "save-config",
-
-    async (event, config) => {
-
-        ConfigService.save(config);
-
-        return {
-
-            success: true
-
-        };
 
     }
 
@@ -258,6 +186,42 @@ ipcMain.handle(
     }
 
 );
+
+ipcMain.handle(
+
+    "prepare-system",
+
+    async (event, config) => {
+
+        return await DatabaseSetupService.install(
+
+    config,
+
+    (progress, message) => {
+
+        event.sender.send(
+
+            "setup-progress",
+
+            {
+
+                progress,
+
+                message
+
+            }
+
+        );
+
+    }
+
+);
+
+    }
+
+);
+
+app.disableHardwareAcceleration();
 
 app.whenReady().then(async () => {
 
@@ -286,7 +250,7 @@ WindowService.createMainWindow(
 
 );
 
-WindowService.getMainWindow().webContents.openDevTools();
+//WindowService.getMainWindow().webContents.openDevTools();
 
         SplashScreenService.close();
 

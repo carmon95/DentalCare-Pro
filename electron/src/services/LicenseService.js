@@ -10,27 +10,14 @@ class LicenseService {
 
     const { app } = require("electron");
 
-    this.licensePath = app.isPackaged
+   this.licensePath = path.join(
 
-        ? path.join(
+    app.getPath("userData"),
 
-            process.resourcesPath,
+    "license.dat"
 
-            "publish",
-
-            "license",
-
-            "license.dat"
-
-        )
-
-        : path.join(
-
-            __dirname,
-
-            "../../../license/license.dat"
-
-        );
+);
+console.log("Ruta licencia:", this.licensePath);
 
 }
 async validate() {

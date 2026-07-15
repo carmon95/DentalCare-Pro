@@ -17,6 +17,13 @@ async function prepare() {
         path.join(publishPath, "backend")
     );
 
+    // Runtime de Node
+
+await fs.copy(
+    path.join(ROOT, "runtime"),
+    path.join(publishPath, "runtime")
+);
+
     // Frontend compilado
     await fs.copy(
         path.join(ROOT, "frontend", "dist"),
@@ -34,19 +41,16 @@ await fs.copy(
 );
 
     // Licencia
-    await fs.ensureDir(
-        path.join(publishPath, "license")
-    );
 
-    await fs.copy(
-        path.join(ROOT, "license", "public"),
-        path.join(publishPath, "license", "public")
-    );
+await fs.ensureDir(
+    path.join(publishPath, "license")
+);
 
-    await fs.copy(
-        path.join(ROOT, "license", "license.dat"),
-        path.join(publishPath, "license", "license.dat")
-    );
+await fs.copy(
+    path.join(ROOT, "license", "public"),
+    path.join(publishPath, "license", "public")
+);
+   
 
     console.log("Publish preparado correctamente.");
 

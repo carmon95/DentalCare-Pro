@@ -55,13 +55,44 @@ else {
 
 }
 
+let nodeExecutable;
+
+if (app.isPackaged) {
+
+    nodeExecutable = path.join(
+
+        process.resourcesPath,
+
+        "publish",
+
+        "runtime",
+
+        "nodejs",
+
+        "node.exe"
+
+    );
+
+}
+else {
+
+    nodeExecutable = "node";
+
+}
+
 this.process = spawn(
 
-    "node",
+    nodeExecutable,
 
-    [backendPath],
+    [
+
+        backendPath
+
+    ],
 
     {
+
+        cwd: path.dirname(backendPath),
 
         windowsHide: true
 

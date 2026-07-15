@@ -75,6 +75,26 @@ contextBridge.exposeInMainWorld(
 
         "get-initial-route"
 
+    ),
+
+    prepareSystem: (config) =>
+
+    ipcRenderer.invoke(
+
+        "prepare-system",
+
+        config
+
+    ),
+
+    onSetupProgress: (callback) =>
+
+    ipcRenderer.on(
+
+        "setup-progress",
+
+        (event, data) => callback(data)
+
     )
 
     }
