@@ -5,6 +5,7 @@ const mysql = require("mysql2/promise");
 const ConfigService = require("./ConfigService");
 const MySQLInstallerService = require("./MySQLInstallerService");
 const ErrorTranslatorService =require("./ErrorTranslatorService");
+const LoggerService =require("./LoggerService");
 
 class DatabaseSetupService {
 
@@ -166,6 +167,14 @@ async importSeed(config) {
 
 async install(config, sendProgress) {
 
+    LoggerService.clear();
+
+    LoggerService.info(
+
+    "Inicio del asistente de instalación."
+
+);
+
     try {
 
         await MySQLInstallerService.prepare(
@@ -184,7 +193,15 @@ async install(config, sendProgress) {
 
         );
 
+        LoggerService.info(
+    "Verificando conexión con MySQL."
+);
+
         await this.testConnection(config);
+
+        LoggerService.info(
+    "Conexión con MySQL establecida."
+);
 
         sendProgress(
 
@@ -194,7 +211,15 @@ async install(config, sendProgress) {
 
         );
 
+        LoggerService.info(
+    `Creando base de datos '${config.database}'.`
+);
+
         await this.createDatabase(config);
+
+        LoggerService.info(
+    "Base de datos creada correctamente."
+);
 
         sendProgress(
 
@@ -204,7 +229,15 @@ async install(config, sendProgress) {
 
         );
 
+        LoggerService.info(
+    "Importando schema.sql."
+);
+
         await this.importSchema(config);
+
+        LoggerService.info(
+    "Schema importado correctamente."
+);
 
         sendProgress(
 
@@ -214,7 +247,15 @@ async install(config, sendProgress) {
 
         );
 
+        LoggerService.info(
+    "Importando seed.sql."
+);
+
         await this.importSeed(config);
+
+        LoggerService.info(
+    "Datos iniciales importados."
+);
 
         sendProgress(
 
@@ -224,7 +265,15 @@ async install(config, sendProgress) {
 
         );
 
+        LoggerService.info(
+    "Guardando configuración."
+);
+
         await this.saveConfiguration(config);
+
+        LoggerService.info(
+    "Configuración guardada correctamente."
+);
 
         sendProgress(
 
@@ -246,6 +295,10 @@ async install(config, sendProgress) {
 
         );
 
+        LoggerService.info(
+    "Instalación finalizada correctamente."
+);
+
         return {
 
             success: true
@@ -254,22 +307,24 @@ async install(config, sendProgress) {
 
     }
 
-    catch(error){
+catch(error){
 
     console.error(error);
+
+    LoggerService.error(
+        error.stack || error.message
+    );
 
     return{
 
         success:false,
 
         message:
-
         ErrorTranslatorService.translate(error)
 
     };
 
 }
-
 }
 
 }

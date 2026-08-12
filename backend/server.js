@@ -15,6 +15,7 @@ const paymentRoutes = require('./src/routes/paymentRoutes');
 const clinicalHistoryRoutes = require('./src/routes/clinicalHistoryRoutes');
 const dashboardRoutes = require('./src/routes/dashboardRoutes');
 const patientSummaryRoutes = require('./src/routes/patientSummaryRoutes');
+const reportRoutes = require('./src/routes/reportRoutes');
 
 const app = express();
 
@@ -60,6 +61,8 @@ app.use(
     patientSummaryRoutes
 );
 
+app.use('/api/reports', reportRoutes);
+
 app.get('/', (req, res) => {
     res.json({
         message: 'Dental API funcionando'
@@ -68,7 +71,7 @@ app.get('/', (req, res) => {
 
 const PORT = 3001;
 
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor iniciado en puerto ${PORT}`);
 });
 

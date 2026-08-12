@@ -205,3 +205,16 @@ Proyecto desarrollado como solución de gestión odontológica para clínicas de
 
 Uso privado.
 Todos los derechos reservados.
+
+---
+
+## Restablecer contraseña de acceso
+
+El restablecimiento se ejecuta localmente desde una terminal, sin una ruta web pública. Con las credenciales de MySQL válidas en `backend/.env`, ejecuta:
+
+```bash
+cd backend
+npm run reset-password -- --username admin
+```
+
+El comando oculta la contraseña mientras se escribe, solicita confirmación y exige al menos 12 caracteres, con mayúscula, minúscula, número y símbolo.

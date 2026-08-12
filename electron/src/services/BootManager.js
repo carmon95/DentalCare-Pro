@@ -3,27 +3,26 @@ const LicenseService = require("./LicenseService");
 
 class BootManager {
 
-   async getInitialRoute() {
+    async getInitialRoute() {
 
-    if (!ConfigService.exists()) {
+        const activated =
+            await LicenseService.isActivated();
 
-        return "/setup";
+        if (!activated) {
+
+            return "/activation";
+
+        }
+
+        if (!ConfigService.exists()) {
+
+            return "/setup";
+
+        }
+
+        return "/login";
 
     }
-
-    const config = ConfigService.load();
-
-    const activated = await LicenseService.isActivated();
-
-    if (!activated) {
-
-        return "/activation";
-
-    }
-
-    return "/login";
-
-}
 
 }
 
