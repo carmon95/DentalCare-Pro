@@ -10,6 +10,10 @@ import {
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 
+import Snackbar from "@mui/material/Snackbar";
+
+import Alert from "@mui/material/Alert";
+
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
@@ -23,44 +27,64 @@ export default function Login() {
 
     const navigate = useNavigate();
 
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+    const [snackbarMessage, setSnackbarMessage] = useState("");
+
+    const [snackbarSeverity, setSnackbarSeverity] = useState("error");
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const [showPassword, setShowPassword] = useState(false);
 
-    const handleLogin = async () => {
+   const handleLogin = async () => {
 
-        try {
 
-            const response = await axios.post(
-                'http://localhost:3001/api/auth/login',
-                {
-                    username,
-                    password
-                }
-            );
+    try {
 
-            localStorage.setItem(
-                'token',
-                response.data.token
-            );
+        const response = await axios.post(
+            'http://localhost:3001/api/auth/login',
+            {
+                username,
+                password
+            }
+        );
 
-            localStorage.setItem(
-                'user',
-                JSON.stringify(response.data.user)
-            );
 
-            navigate('/dashboard');
+        localStorage.setItem(
+            'token',
+            response.data.token
+        );
 
-        } catch (error) {
+        localStorage.setItem(
+            'user',
+            JSON.stringify(response.data.user)
+        );
 
-            console.error(error);
+        navigate('/dashboard');
 
-            alert('Usuario o contraseña incorrectos');
+    }catch (error) {
 
-        }
+    console.error(error);
 
-    };
+    let message = "Ocurrió un error al iniciar sesión.";
+
+    if (error.response?.status === 401) {
+
+        message = error.response.data.message;
+
+    }
+
+    setSnackbarSeverity("error");
+
+    setSnackbarMessage(message);
+
+    setSnackbarOpen(true);
+
+}
+
+};
 
     return (
 
@@ -114,20 +138,28 @@ export default function Login() {
                         Sistema de Gestión Odontológica
                     </Typography>
 
-                    <TextField
-                        fullWidth
-                        label="Usuario"
-                        margin="normal"
-                        value={username}
-                        onChange={(e) =>
-                            setUsername(e.target.value)
-                        }
-                        sx={{
-                            '& .MuiOutlinedInput-root': {
-                                borderRadius: 3
-                            }
-                        }}
-                    />
+                 <TextField
+    fullWidth
+    label="Usuario"
+    margin="normal"
+    value={username}
+    onChange={(e) => {
+
+        setUsername(e.target.value);
+
+        if (snackbarOpen) {
+
+            setSnackbarOpen(false);
+
+        }
+
+    }}
+    sx={{
+        '& .MuiOutlinedInput-root': {
+            borderRadius: 3
+        }
+    }}
+/>
 
                    <TextField
     fullWidth
@@ -135,9 +167,17 @@ export default function Login() {
     type={showPassword ? 'text' : 'password'}
     margin="normal"
     value={password}
-    onChange={(e) =>
-        setPassword(e.target.value)
+   onChange={(e) => {
+
+    setPassword(e.target.value);
+
+    if (snackbarOpen) {
+
+        setSnackbarOpen(false);
+
     }
+
+}}
     sx={{
         '& .MuiOutlinedInput-root': {
             borderRadius: 3
@@ -203,7 +243,31 @@ export default function Login() {
 
             </Card>
 
+            <Snackbar
+    open={snackbarOpen}
+    autoHideDuration={4000}
+    onClose={() => setSnackbarOpen(false)}
+    anchorOrigin={{
+        vertical: "top",
+        horizontal: "center"
+    }}
+>
+
+    <Alert
+        severity={snackbarSeverity}
+        variant="filled"
+        onClose={() => setSnackbarOpen(false)}
+        sx={{ width: "100%" }}
+    >
+
+        {snackbarMessage}
+
+    </Alert>
+
+</Snackbar>
+
         </Box>
+    
 
     );
 }

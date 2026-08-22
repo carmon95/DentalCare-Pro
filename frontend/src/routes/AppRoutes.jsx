@@ -1,5 +1,5 @@
 import {
-    BrowserRouter,
+    HashRouter,
     Routes,
     Route
 } from 'react-router-dom';
@@ -9,7 +9,14 @@ import Dashboard from '../pages/Dashboard';
 import Patients from '../pages/Patients';
 import Appointments from '../pages/Appointments';
 import Treatments from '../pages/Treatments';
+import Payments from '../pages/Payments';
+import ClinicalHistories from '../pages/ClinicalHistories';
+import PatientHistory from '../pages/PatientHistory';
+import Reports from '../pages/Reports';
 import Settings from '../pages/Settings';
+import Activation from '../pages/license/Activation';
+import Setup from "../pages/setup/Setup";
+import Boot from "../pages/Boot";
 
 import PrivateRoute from './PrivateRoute';
 
@@ -17,15 +24,28 @@ export default function AppRoutes() {
 
     return (
 
-        <BrowserRouter>
+        <HashRouter>
 
             <Routes>
+                <Route
+    path="/setup"
+    element={<Setup />}
+/>
 
                 <Route
-                    path="/"
-                    element={<Login />}
+    path="/activation"
+    element={<Activation />}
                 />
 
+             <Route
+    path="/"
+    element={<Boot />}
+/>
+
+<Route
+    path="/login"
+    element={<Login />}
+/>
                 <Route
                     path="/dashboard"
                     element={
@@ -62,6 +82,38 @@ export default function AppRoutes() {
     }
 />
 
+<Route
+    path="/payments"
+    element={
+        <PrivateRoute>
+            <Payments />
+        </PrivateRoute>
+    }
+/>
+
+<Route
+    path="/clinical-histories"
+    element={
+        <PrivateRoute>
+            <ClinicalHistories />
+        </PrivateRoute>
+    }
+/>
+
+<Route
+    path="/patient-history/:id"
+    element={
+        <PrivateRoute>
+            <PatientHistory />
+        </PrivateRoute>
+    }
+/>
+
+    <Route
+    path="/reports"
+    element={<Reports />}
+/>
+
                 <Route
     path="/settings"
     element={
@@ -73,7 +125,7 @@ export default function AppRoutes() {
 
             </Routes>
 
-        </BrowserRouter>
+        </HashRouter>
 
     );
 

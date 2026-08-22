@@ -15,6 +15,7 @@ import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import SettingsIcon from '@mui/icons-material/Settings';
+import DescriptionIcon from '@mui/icons-material/Description';
 
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -50,11 +51,21 @@ export default function Sidebar() {
         },
         {
             text: 'Pagos',
-            icon: <PaymentsIcon />
+            icon: <PaymentsIcon />,
+            path: '/payments'
+           
         },
+
+        {
+    text: 'Historial Clínico',
+    icon: <DescriptionIcon />,
+    path: '/clinical-histories'
+},
+
         {
             text: 'Reportes',
-            icon: <BarChartIcon />
+            icon: <BarChartIcon />,
+              path: '/reports'
         },
         {
             text: 'Configuración',

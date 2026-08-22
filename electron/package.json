@@ -1,0 +1,76 @@
+{
+  "name": "electron",
+  "version": "1.0.0",
+  "description": "Sistema profesional de gestión para clínicas odontológicas",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Carlos Montalván",
+  "license": "ISC",
+  "dependencies": {
+    "mysql2": "^3.22.5",
+    "systeminformation": "^5.31.12",
+    "tree-kill": "^1.2.2",
+    "winreg": "^1.2.5"
+  },
+  "devDependencies": {
+    "electron": "^43.0.0",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "com.dentalcare.pro",
+    "productName": "DentalCare Pro",
+    "icon": "assets/icon.ico",
+    "copyright": "© 2026 Carlos Montalván",
+    "artifactName": "${productName} Setup ${version}.${ext}",
+    "compression": "maximum",
+    "directories": {
+      "output": "dist"
+    },
+    "asar": true,
+    "files": [
+      "main.js",
+      "preload.js",
+      "bootManager.js",
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "../publish",
+        "to": "publish"
+      },
+      {
+    "from": "../installer/mysql",
+    "to": "mysql"
+  }
+    ],
+    "win": {
+      "icon": "assets/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "requestedExecutionLevel": "requireAdministrator"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "DentalCare Pro",
+      "deleteAppDataOnUninstall": false,
+      "runAfterFinish": true,
+      "include": "build/installer.nsh"
+    }
+  }
+}

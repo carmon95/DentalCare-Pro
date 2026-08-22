@@ -1,0 +1,58 @@
+version: "3.9"
+
+services:
+
+  mysql:
+    image: mysql:8.4
+    container_name: dental_mysql
+
+    restart: always
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: dentalcare_pro
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  backend:
+
+    build:
+      context: ./backend
+
+    container_name: dental_backend
+
+    restart: always
+
+    depends_on:
+      - mysql
+
+    ports:
+      - "3001:3001"
+
+    environment:
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: admin
+      DB_NAME: dentalcare_pro
+
+  frontend:
+
+    build:
+      context: ./frontend
+
+    container_name: dental_frontend
+
+    restart: always
+
+    depends_on:
+      - backend
+
+    ports:
+      - "5173:5173"
+
+volumes:
+  mysql_data:

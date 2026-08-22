@@ -93,8 +93,18 @@ export default function TreatmentDialog({
 
             const data =
                 await getPatients();
+setPatients(
 
-            setPatients(data);
+    data.filter(
+
+        patient =>
+
+            patient.status ===
+            'ACTIVO'
+
+    )
+
+);
 
         } catch (error) {
 

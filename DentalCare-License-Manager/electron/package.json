@@ -1,0 +1,56 @@
+{
+  "name": "dentalcare-license-manager",
+  "version": "1.0.0",
+  "description": "Herramienta para generar licencias de DentalCare Pro",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis"
+  },
+  "author": "Carlos Montalván",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^43.0.0",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "com.dentalcare.licensemanager",
+    "productName": "DentalCare License Manager",
+    "icon": "assets/icon.ico",
+    "copyright": "© 2026 Carlos Montalván",
+    "artifactName": "${productName} Setup ${version}.${ext}",
+    "compression": "maximum",
+    "directories": {
+      "output": "dist"
+    },
+    "asar": true,
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "icon": "assets/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "DentalCare License Manager",
+      "deleteAppDataOnUninstall": false,
+      "runAfterFinish": true
+    }
+  }
+}

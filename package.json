@@ -1,0 +1,37 @@
+{
+  "name": "dentalsystem",
+  "version": "1.0.0",
+  "description": "Sistema de gestión odontológica desarrollado para clínicas dentales, orientado a mejorar el control de pacientes, citas, tratamientos y procesos administrativos.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "backend": "npm run dev --prefix backend",
+    "frontend": "npm run dev --prefix frontend",
+    "electron": "npm start --prefix electron",
+    "dev": "concurrently \"npm run frontend\" \"wait-on http://localhost:5173 && npm run electron\"",
+    "build:frontend": "npm run build --prefix frontend",
+    "start:prod": "cross-env NODE_ENV=production npm start --prefix electron",
+    "prepare:publish": "node scripts/preparePublish.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carmon95/DentalCare-Pro.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carmon95/DentalCare-Pro/issues"
+  },
+  "homepage": "https://github.com/carmon95/DentalCare-Pro#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.3",
+    "cross-env": "^10.1.0",
+    "electron": "^43.0.0",
+    "electron-builder": "^26.15.3",
+    "fs-extra": "^11.3.6",
+    "wait-on": "^9.0.10"
+  }
+}

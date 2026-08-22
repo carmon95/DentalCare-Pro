@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>DentalCare Pro</title>
+
+<style>
+
+body{
+
+margin:0;
+
+font-family:Segoe UI;
+
+background:#0EA5E9;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+height:100vh;
+
+color:white;
+
+}
+
+.container{
+
+text-align:center;
+
+}
+
+h1{
+
+margin-bottom:10px;
+
+}
+
+.loader{
+
+width:220px;
+
+height:10px;
+
+background:white;
+
+border-radius:20px;
+
+overflow:hidden;
+
+margin:auto;
+
+}
+
+.bar{
+
+height:100%;
+
+width:35%;
+
+background:#22C55E;
+
+animation:loading 1.2s infinite;
+
+}
+
+@keyframes loading{
+
+0%{
+
+margin-left:-40%;
+
+}
+
+100%{
+
+margin-left:100%;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>DentalCare Pro</h1>
+
+<p>Iniciando sistema...</p>
+
+<div class="loader">
+
+<div class="bar"></div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

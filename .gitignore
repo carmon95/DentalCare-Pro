@@ -21,3 +21,8 @@ build/
 # Windows
 Thumbs.db
 Desktop.ini
+
+# MySQL Installer
+installer/mysql/*.msi
+installer/mysql/*.zip
+installer/mysql/*.exe
